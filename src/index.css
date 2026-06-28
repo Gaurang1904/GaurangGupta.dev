@@ -1,0 +1,141 @@
+/* ── Design tokens ── */
+:root {
+  --color-bg: rgb(250, 250, 250);
+  --color-text-primary: rgb(0, 0, 0);
+  --color-text-secondary: rgb(143, 143, 143);
+  --color-line: rgb(41, 41, 41);
+  --color-icon: rgb(161, 161, 161);
+
+  --font-inter: "Inter Tight", sans-serif;
+  --font-grotesk: "Space Grotesk", sans-serif;
+  --font-geist: "Geist", sans-serif;
+}
+
+html[toggle-theme="dark"],
+body[toggle-theme="dark"] {
+  --color-bg: rgb(15, 15, 15);
+  --color-text-primary: rgb(227, 227, 225);
+  --color-text-secondary: rgb(153, 153, 153);
+}
+
+/* ── Text selection — matches Framer template "Selection Color Changer" ── */
+::selection {
+  background: var(--color-bg);
+  color: rgb(235, 30, 0);
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* scroll-behavior handled by Lenis smooth scroll (see useSmoothScroll) */
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-inter);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Typography scale (mirrors Framer text styles) ── */
+.text-display {
+  font-family: var(--font-grotesk);
+  font-weight: 500;
+  font-size: clamp(80px, 10vw, 128px);
+  line-height: 0.95em;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.text-h1 {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: 1.4em;
+  letter-spacing: -0.02em;
+}
+
+.text-h2 {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 50px;        /* desktop */
+  line-height: 1.2em;
+  letter-spacing: 0em;
+}
+
+.text-h3 {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.2em;
+  letter-spacing: 0px;
+}
+
+.text-body {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 20px;        /* desktop */
+  line-height: 1.2em;
+  letter-spacing: 0em;
+}
+
+.text-geist {
+  font-family: var(--font-geist);
+  font-weight: 400;
+}
+
+/* ── Layout container ── */
+.page {
+  width: 100%;
+  padding-top: 64px;
+}
+
+/* ── Section spacing ── */
+.section {
+  padding: 0 64px;
+}
+
+/* ── Tablet breakpoint (Framer: ≤810px) ── */
+@media (max-width: 810px) {
+  .text-h2 {
+    font-size: 30px;
+    line-height: 1.2em;
+    letter-spacing: 0em;
+  }
+  .text-body {
+    font-size: 16px;
+  }
+  .section {
+    padding: 0 24px;
+  }
+  .page {
+    padding-top: 32px;
+  }
+}
+
+/* ── Phone breakpoint (Framer: ≤480px) ── */
+@media (max-width: 480px) {
+  .text-h2 {
+    font-size: 25px;
+    line-height: 1.3em;
+    letter-spacing: -0.01em;
+  }
+  .text-body {
+    font-size: 14px;
+  }
+}
