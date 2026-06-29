@@ -3,6 +3,7 @@ import { AboutSection } from "../components/AboutSection"
 import { SelectedWorks } from "../components/SelectedWorks"
 import { PlaygroundSection } from "../components/PlaygroundSection"
 import { ExperiencesSection } from "../components/ExperiencesSection"
+import { SkillsStrip } from "../components/SkillsStrip"
 import { Footer } from "../components/Footer"
 
 interface HomePageProps {
@@ -18,6 +19,7 @@ export function HomePage({ theme, onToggle }: HomePageProps) {
       <SelectedWorks />
       <PlaygroundSection />
       <ExperiencesSection />
+      <SkillsStrip />
       <Footer />
     </div>
   )

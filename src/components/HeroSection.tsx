@@ -55,7 +55,7 @@ export function HeroSection({ theme, onToggle }: HeroSectionProps) {
             position: "absolute",
             top: "-8%",
             left: "60%",
-            width: "85  %",            /* ← zoom: lower % = more zoomed out (dark sides blend into page) */
+            width: "85%",            /* ← zoom: lower % = more zoomed out (dark sides blend into page) */
             height: "170%",
             objectFit: "cover",
             objectPosition: "center 28%",
