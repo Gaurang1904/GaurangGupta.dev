@@ -48,6 +48,9 @@ const SCALE_MIN = 0.55      // back-arc scale
 const OP_MIN = 0.22         // back-arc opacity (visible, not culled)
 const BRIGHT_MIN = 0.82
 const SAT_MIN = 0.70
+const DRAG_SENS = 0.0007     // revolutions per pixel dragged
+const RETURN_RATE = 2.5      // how fast momentum eases back to baseline speed
+const MAX_VEL = 3            // clamp fling velocity (rev/s)
 const TAU = Math.PI * 2
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
@@ -101,23 +104,95 @@ export function SkillsStrip() {
     let raf = 0
     let progress = 0
     let last = performance.now()
+    let dragging = false
+    let lastX = 0
+    let lastMoveT = 0
+    let vel = SPEED        // current angular velocity (rev/s)
+    let dragVel = 0        // smoothed velocity while dragging (the fling)
+
+    const onDown = (e: PointerEvent) => {
+      dragging = true
+      lastX = e.clientX
+      lastMoveT = performance.now()
+      dragVel = 0
+      try { stage.setPointerCapture(e.pointerId) } catch {}
+      stage.style.cursor = "grabbing"
+    }
+    const onMove = (e: PointerEvent) => {
+      if (!dragging) return
+      const now = performance.now()
+      const dt = Math.max(0.001, (now - lastMoveT) / 1000)
+      const dProg = (e.clientX - lastX) * DRAG_SENS   // follow the finger
+      lastX = e.clientX
+      lastMoveT = now
+      progress += dProg
+      progress -= Math.floor(progress)                // keep in [0, 1)
+      dragVel = dragVel * 0.5 + (dProg / dt) * 0.5     // track fling velocity (smoothed)
+      layout(progress)
+    }
+    const onUp = (e: PointerEvent) => {
+      if (!dragging) return
+      dragging = false
+      vel = clamp(dragVel, -MAX_VEL, MAX_VEL)          // carry the fling, then ease back
+      try { stage.releasePointerCapture(e.pointerId) } catch {}
+      stage.style.cursor = "grab"
+    }
+    stage.addEventListener("pointerdown", onDown)
+    stage.addEventListener("pointermove", onMove)
+    stage.addEventListener("pointerup", onUp)
+    stage.addEventListener("pointercancel", onUp)
+
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000)
       last = now
-      progress = (progress + SPEED * dt) % 1
+      if (dragging) {
+        if (now - lastMoveT > 60) dragVel = 0          // held still → no fling on release
+      } else {
+        vel += (SPEED - vel) * (1 - Math.exp(-RETURN_RATE * dt))  // ease velocity back to baseline
+        progress += vel * dt
+        progress -= Math.floor(progress)
+      }
       layout(progress)
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
-    return () => { cancelAnimationFrame(raf); ro.disconnect() }
+
+    return () => {
+      cancelAnimationFrame(raf)
+      ro.disconnect()
+      stage.removeEventListener("pointerdown", onDown)
+      stage.removeEventListener("pointermove", onMove)
+      stage.removeEventListener("pointerup", onUp)
+      stage.removeEventListener("pointercancel", onUp)
+    }
   }, [])
 
   return (
-    <section style={{ position: "relative", padding: "70px 64px", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "50%", left: 0, width: 70, height: 1, background: "var(--color-text-secondary)", opacity: 0.5 }} />
-      <div style={{ position: "absolute", top: "50%", right: 0, width: 70, height: 1, background: "var(--color-text-secondary)", opacity: 0.5 }} />
+    <section style={{ padding: "90px 64px", overflow: "hidden" }}>
+      <h2 className="text-h2" style={{ userSelect: "none", marginBottom: 36 }}>Skills</h2>
 
-      <div ref={stageRef} style={{ position: "relative", height: 230 }}>
+      <div style={{ position: "relative" }}>
+        {/* From Data ———  (left flank) */}
+        <div style={{ position: "absolute", top: "50%", left: 0, width: "20%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 14, pointerEvents: "none" }}>
+          <span className="text-geist" style={{ fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", color: "#000000", whiteSpace: "nowrap" }}>From Data</span>
+          <div style={{ flex: 1, height: 1, background: "var(--color-text-secondary)", opacity: 0.7 }} />
+        </div>
+        {/* ——— To DeFi  (right flank) */}
+        <div style={{ position: "absolute", top: "50%", right: 0, width: "20%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 14, pointerEvents: "none" }}>
+          <div style={{ flex: 1, height: 1, background: "var(--color-text-secondary)", opacity: 0.7 }} />
+          <span className="text-geist" style={{ fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", color: "#000000", whiteSpace: "nowrap" }}>To DeFi</span>
+        </div>
+
+        <div
+          ref={stageRef}
+          style={{
+            position: "relative",
+            height: 230,
+            cursor: "grab",
+            touchAction: "pan-y",   /* let the page scroll vertically; we handle horizontal drag */
+            userSelect: "none",
+          }}
+        >
         {Array.from({ length: COUNT }).map((_, i) => (
           <div
             key={i}
@@ -130,6 +205,7 @@ export function SkillsStrip() {
             <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">{MARKS[i % MARKS.length]}</svg>
           </div>
         ))}
+        </div>
       </div>
     </section>
   )
