@@ -42,7 +42,7 @@ const SPEED = 0.028         // revolutions per second
 const SPREAD = 0.40         // RX as a fraction of band width
 const RX_MIN = 160
 const RX_MAX = 440
-const RY = 80               // vertical radius → gap between front & back arcs
+const RY = 45               // vertical radius → gap between front & back arcs
 const MAX_ROT = 30          // degrees
 const SCALE_MIN = 0.55      // back-arc scale
 const OP_MIN = 0.22         // back-arc opacity (visible, not culled)
@@ -174,13 +174,13 @@ export function SkillsStrip() {
       <div style={{ position: "relative" }}>
         {/* From Data ———  (left flank) */}
         <div style={{ position: "absolute", top: "50%", left: 0, width: "20%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 14, pointerEvents: "none" }}>
-          <span className="text-geist" style={{ fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", color: "#000000", whiteSpace: "nowrap" }}>From Data</span>
+          <span className="text-geist" style={{ fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>From Data</span>
           <div style={{ flex: 1, height: 1, background: "var(--color-text-secondary)", opacity: 0.7 }} />
         </div>
         {/* ——— To DeFi  (right flank) */}
         <div style={{ position: "absolute", top: "50%", right: 0, width: "20%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 14, pointerEvents: "none" }}>
           <div style={{ flex: 1, height: 1, background: "var(--color-text-secondary)", opacity: 0.7 }} />
-          <span className="text-geist" style={{ fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", color: "#000000", whiteSpace: "nowrap" }}>To DeFi</span>
+          <span className="text-geist" style={{ fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>To DeFi</span>
         </div>
 
         <div
