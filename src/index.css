@@ -18,6 +18,16 @@ body[toggle-theme="dark"] {
   --color-text-secondary: rgb(153, 153, 153);
 }
 
+/* ── Availability badge dot — live pulse ── */
+@keyframes status-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(158, 255, 0, 0.55); }
+  70%  { box-shadow: 0 0 0 7px rgba(158, 255, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(158, 255, 0, 0); }
+}
+.status-dot {
+  animation: status-pulse 2s infinite;
+}
+
 /* ── Text selection — matches Framer template "Selection Color Changer" ── */
 ::selection {
   background: var(--color-bg);
@@ -60,6 +70,21 @@ img {
   letter-spacing: -0.04em;
   text-transform: uppercase;
   text-align: center;
+}
+
+/* ── Hero name — stretched edge-to-edge ──
+   The container (.hero-name) sets up a container-query context, so the
+   heading's font-size in `cqw` (1% of this box's width) fills the full
+   width at every screen size.
+   ▶ TO RESIZE THE NAME: change the `font-size` value below.
+     higher cqw = bigger / tighter to the edges, lower = smaller / more gap. */
+.hero-name {
+  container-type: inline-size;
+}
+.hero-name h1.text-display {
+  font-size: 22cqw;       /* ← edit this number to grow/shrink the name in its column */
+  line-height: 0.85em;
+  text-align: left;
 }
 
 .text-h1 {
