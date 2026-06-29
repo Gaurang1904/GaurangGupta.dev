@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import { useTheme } from "./components/ThemeToggle"
 import { useSmoothScroll } from "./components/SmoothScroll"
+import { AvailabilityBadge } from "./components/AvailabilityBadge"
 import { HomePage } from "./pages/HomePage"
 import { ProjectPage } from "./pages/ProjectPage"
 import { PlaygroundPage } from "./pages/PlaygroundPage"
@@ -11,12 +12,15 @@ export default function App() {
   useSmoothScroll()
 
   return (
-    <Routes>
-      <Route path="/" element={<HomePage theme={theme} onToggle={toggle} />} />
-      <Route path="/:slug" element={<ProjectPage />} />
-      <Route path="/Playground" element={<PlaygroundPage />} />
-      <Route path="/404" element={<NotFoundPage />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <>
+      <AvailabilityBadge />
+      <Routes>
+        <Route path="/" element={<HomePage theme={theme} onToggle={toggle} />} />
+        <Route path="/:slug" element={<ProjectPage />} />
+        <Route path="/Playground" element={<PlaygroundPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   )
 }

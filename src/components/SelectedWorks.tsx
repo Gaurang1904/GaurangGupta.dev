@@ -16,9 +16,6 @@ export function SelectedWorks() {
         }}
       >
         <h2 className="text-h2" style={{ userSelect: "none" }}>My Projects</h2>
-        <span className="text-h3" style={{ color: "var(--color-text-secondary)" }}>
-          2024 — 2026
-        </span>
       </div>
 
       {/* 2×2 grid */}
