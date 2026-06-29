@@ -211,6 +211,11 @@ export function SkillsStrip() {
           )
         })}
         </div>
+
+        {/* bottom-right tagline — absolute, so it can sit up inside the carousel band */}
+        <div style={{ position: "absolute", right: 0, bottom: 24, pointerEvents: "none" }}>
+          <span className="text-geist" style={{ fontSize: 21, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--color-text-primary)" }}>Stack I Build With</span>
+        </div>
       </div>
     </section>
   )
