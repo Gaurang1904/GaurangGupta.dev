@@ -17,9 +17,9 @@ export function HomePage({ theme, onToggle }: HomePageProps) {
       <HeroSection theme={theme} onToggle={onToggle} />
       <AboutSection />
       <SelectedWorks />
-      <PlaygroundSection />
-      <ExperiencesSection />
       <SkillsStrip />
+      <ExperiencesSection />
+      <PlaygroundSection />
       <Footer />
     </div>
   )
