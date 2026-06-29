@@ -24,7 +24,7 @@ body[toggle-theme="dark"] {
   left: 50%;
   top: 50%;
   border-radius: 999px;
-  background: #fff;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,6 @@ body[toggle-theme="dark"] {
   transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px)) rotateY(var(--rot, 0deg)) scale(var(--sc, 1));
   opacity: var(--op, 1);
   filter: brightness(var(--br, 1)) saturate(var(--sat, 1));
-  box-shadow: 0 var(--sy, 4px) var(--sb, 12px) rgba(0, 0, 0, var(--sa, 0.15));
   will-change: transform, opacity;
 }
 

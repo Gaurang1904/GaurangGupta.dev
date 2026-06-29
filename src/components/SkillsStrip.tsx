@@ -21,23 +21,18 @@ import { useEffect, useRef } from "react"
   public/skills/ and swap the <svg> for an <img>.
 */
 
-const stroke = { fill: "none", stroke: "#111", strokeWidth: 2.2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const }
-
-const MARKS: React.ReactNode[] = [
-  <><path d="M16 7a5 5 0 1 0 1.5 6" {...stroke} /><circle cx="12" cy="12" r="2.4" fill="#111" /></>,
-  <><path d="M4 12a8 8 0 0 1 8-8" {...stroke} /><path d="M20 12a8 8 0 0 1-8 8" {...stroke} /><circle cx="12" cy="12" r="2" fill="#111" /></>,
-  <path d="M6 19V5l12 14V5" {...stroke} strokeWidth={2.4} />,
-  <g {...stroke} strokeWidth={2}><line x1="12" y1="4" x2="12" y2="20" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="6.3" y1="6.3" x2="17.7" y2="17.7" /><line x1="17.7" y1="6.3" x2="6.3" y2="17.7" /></g>,
-  <path d="M12 3c2.6 1.8 3.8 5.2 3.8 8.4L12 15l-3.8-3.6C8.2 8.2 9.4 4.8 12 3z M8.2 14l-2 4 3.4-1.2 M15.8 14l2 4-3.4-1.2" {...stroke} />,
-  <path d="M7 4v16 M7 12l8-8 M9 12l8 8" {...stroke} strokeWidth={2.2} />,
-  <path d="M6 5l13 7-13 7z" fill="#111" />,
-  <path d="M12 3l8 4.6v8.8L12 21l-8-4.6V7.6z" {...stroke} strokeWidth={2} />,
-  <><circle cx="9" cy="12" r="4.4" {...stroke} /><circle cx="15" cy="12" r="4.4" {...stroke} /></>,
-  <g {...stroke} strokeWidth={2}><path d="M12 4v16" /><path d="M5 8l7 4 7-4" /><path d="M5 16l7-4 7 4" /></g>,
+/* Skill logos — files live in public/skills/<name>.svg. Order = position
+   around the drum; mixed so categories don't cluster. */
+const SKILLS = [
+  "python", "solidity", "react", "pytorch", "postgresql", "ethereum", "fastapi",
+  "docker", "langchain", "redis", "typescript", "chainlink", "numpy", "nodejs",
+  "tensorflow", "go", "pandas", "uniswap", "aws",
 ]
 
-const COUNT = 18
+const COUNT = SKILLS.length
 const BADGE = 56
+const LOGO_BASE = 50        // default logo size
+const LOGO_SIZE: Record<string, number> = { pandas: 60 }  // per-logo overrides (some SVGs have built-in padding)
 const SPEED = 0.028         // revolutions per second
 const SPREAD = 0.40         // RX as a fraction of band width
 const RX_MIN = 160
@@ -169,7 +164,10 @@ export function SkillsStrip() {
 
   return (
     <section style={{ padding: "90px 64px", overflow: "hidden" }}>
-      <h2 className="text-h2" style={{ userSelect: "none", marginBottom: 36 }}>Skills</h2>
+      <h2 className="text-h2" style={{ userSelect: "none", marginBottom: 36 }}>
+        <span style={{ fontSize: "0.4em", verticalAlign: "super", marginRight: 8, color: "var(--color-text-secondary)" }}>20+</span>
+        Skills
+      </h2>
 
       <div style={{ position: "relative" }}>
         {/* From Data ———  (left flank) */}
@@ -193,18 +191,25 @@ export function SkillsStrip() {
             userSelect: "none",
           }}
         >
-        {Array.from({ length: COUNT }).map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => { els.current[i] = el }}
-            className="skill-badge"
-            style={{ width: BADGE, height: BADGE }}
-          >
-            {/* Placeholder mark — replace with your logo:
-                <img src={`/skills/skill-${i}.svg`} alt="" style={{ width: 32, height: 32 }} /> */}
-            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">{MARKS[i % MARKS.length]}</svg>
-          </div>
-        ))}
+        {Array.from({ length: COUNT }).map((_, i) => {
+          const name = SKILLS[i]
+          const size = LOGO_SIZE[name] ?? LOGO_BASE
+          return (
+            <div
+              key={i}
+              ref={(el) => { els.current[i] = el }}
+              className="skill-badge"
+              style={{ width: BADGE, height: BADGE }}
+            >
+              <img
+                src={`/skills/${name}.svg`}
+                alt={name}
+                draggable={false}
+                style={{ width: size, height: size, objectFit: "contain", pointerEvents: "none" }}
+              />
+            </div>
+          )
+        })}
         </div>
       </div>
     </section>
