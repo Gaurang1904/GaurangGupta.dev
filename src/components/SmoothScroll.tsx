@@ -1,5 +1,23 @@
 import { useEffect } from "react"
+import { useLocation } from "react-router-dom"
 import Lenis from "lenis"
+
+let lenisRef: Lenis | null = null
+
+/* Jump to the top instantly (used on route change so a new page starts at 0). */
+export function scrollToTop() {
+  if (lenisRef) lenisRef.scrollTo(0, { immediate: true })
+  else window.scrollTo(0, 0)
+}
+
+/* Reset scroll to the top whenever the route path changes. */
+export function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    scrollToTop()
+  }, [pathname])
+  return null
+}
 
 /*
   Smooth Scroll — mirrors the Framer "Smooth_Scroll" component instance,
@@ -37,6 +55,7 @@ export function useSmoothScroll() {
       infinite: false,
       autoResize: true,
     })
+    lenisRef = lenis
 
     let frameId: number
     const raf = (time: number) => {
@@ -48,6 +67,7 @@ export function useSmoothScroll() {
     return () => {
       cancelAnimationFrame(frameId)
       lenis.destroy()
+      lenisRef = null
     }
   }, [])
 }

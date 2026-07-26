@@ -1,9 +1,4 @@
-const experiences = [
-  { year: "2022", role: "B.Tech CSE (AI & ML)", org: "Bennett University" },
-  { year: "2024", role: "Token2049 Singapore", org: "Tychi Labs" },
-  { year: "2025", role: "AI/ML & Blockchain Engineer", org: "Tychi Labs" },
-  { year: "2026", role: "B.Tech Graduation", org: "Bennett University" },
-]
+import { Link } from "react-router-dom"
 
 export function ExperiencesSection() {
   return (
@@ -20,36 +15,43 @@ export function ExperiencesSection() {
       >
         {/* Heading */}
         <div style={{ gridColumn: "span 2" }}>
-          <h2 className="text-h2" style={{ userSelect: "none" }}>Experiences</h2>
+          <h2 className="text-h2" style={{ userSelect: "none" }}>Experience</h2>
         </div>
 
-        {/* Items */}
-        <div
+        {/* Single role — clickable through to the detail page */}
+        <Link
+          to="/experience/tychi-labs"
           style={{
             gridColumn: "span 4",
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 15,
+            display: "flex",
+            flexDirection: "column",
+            gap: 24,
+            paddingBottom: 20,
+            color: "inherit",
+            textDecoration: "none",
+            transition: "opacity 0.2s ease",
           }}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.6")}
+          onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
         >
-          {experiences.map(({ year, role, org }) => (
-            <div
-              key={year}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 30,
-                paddingBottom: 50,
-              }}
-            >
-              <span className="text-h3" style={{ color: "#999999" }}>{year}</span>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <span className="text-body">{role}</span>
-                <span className="text-body" style={{ color: "#999999" }}>{org}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+          <img
+            src="/tychi-logo.png"
+            alt="Tychi Labs"
+            style={{
+              width: 44,
+              height: 44,
+              objectFit: "cover",
+              borderRadius: 10,
+              background: "#000",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              display: "block",
+            }}
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span className="text-h3">AI/ML &amp; Blockchain Engineer ↗</span>
+            <span className="text-body" style={{ color: "#999999" }}>Tychi Labs · Delhi, India</span>
+          </div>
+        </Link>
       </div>
     </section>
   )

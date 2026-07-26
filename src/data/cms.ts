@@ -8,6 +8,7 @@ export interface WorksItem {
   description: string
   services: string
   role: string
+  stack: string[]
   thumbnail: string | null
   image02: string | null
   image03: string | null
@@ -15,6 +16,9 @@ export interface WorksItem {
   image05: string | null
   image06: string | null
   image07: string | null
+  github: string
+  heroImage?: string
+  walkthrough?: { image: string; title: string; caption: string }[]
   nextProject: string
 }
 
@@ -28,83 +32,123 @@ export interface ArchiveItem {
 
 export const worksItems: WorksItem[] = [
   {
-    id: "R7qwFz4xW",
-    slug: "n1-widgets",
-    title: "N1 widgets",
-    category: "Branding UI/UX",
-    date: "2024",
+    id: "fluxllm",
+    slug: "fluxllm",
+    title: "FluxLLM — AI Gateway",
+    category: "AI Infrastructure",
+    date: "2025",
     overview:
-      "This project is entirely independent. I deeply admire and respect the teams at Nothing. I learned from their work and recreated Figma elements to help others design. This is why I love to make these resources. Made by Kaysar - kawsar.design",
+      "A self-hosted LLM gateway unifying Groq, Gemini, Ollama, and vLLM behind one OpenAI-compatible API.",
     description:
-      "<p>For this Widgets, I've used two great fonts: Roboto and NDOT 47 and 45 (Inspired by Nothing). You may find a folder for these font and others. To download and install this font for use within Figma, Once installed, restart Figma!</p>",
-    services: "<p>UI Animation<br/>Type Designer</p>",
-    role: "<p>UI Designer<br/>Creative Director</p>",
-    thumbnail:
-      "https://framerusercontent.com/images/NhvP8fS9Bd47LSAWDVCOT3xiw.png",
-    image02:
-      "https://framerusercontent.com/images/Ad0XwCrH3UtZjAPwz3YczDwhKI.png",
-    image03:
-      "https://framerusercontent.com/images/cVqKOgtjwAnHqw4VZpEo1h1rB4.png",
-    image04:
-      "https://framerusercontent.com/images/mi7ZA81JHDM7JCGMzzE161hbE.png",
+      "<p>FluxLLM puts every model provider behind a single OpenAI-compatible endpoint. Adaptive EMA routing scores models on live cost and latency, while per-provider circuit breakers with automatic fallback and SHA-256 response caching keep it resilient and cheap.</p>",
+    services: "<p>FastAPI · PostgreSQL<br/>Redis · Docker<br/>vLLM · React</p>",
+    role: "<p>Design &amp; Engineering</p>",
+    stack: ["python", "fastapi", "postgresql", "redis", "docker", "react"],
+    thumbnail: null,
+    image02: null,
+    image03: null,
+    image04: null,
     image05: null,
     image06: null,
     image07: null,
-    nextProject: "/h23",
+    github: "https://github.com/Gaurang1904/Ai-Gateway",
+    heroImage: "/fluxllm/hero.png",
+    walkthrough: [
+      {
+        image: "/fluxllm/api-keys.png",
+        title: "Create & manage keys",
+        caption:
+          "Issue API keys per workspace, each with an optional credit limit, and track status, last-used, and creation date at a glance.",
+      },
+      {
+        image: "/fluxllm/create-key.png",
+        title: "Name it & set a budget",
+        caption:
+          "Name a key and set an optional credit limit; on creation the key is shown once, then stored only as a hash — never displayed again.",
+      },
+      {
+        image: "/fluxllm/key-detail.png",
+        title: "Usage, spend & budgets",
+        caption:
+          "Per-key usage and spend over time, metadata, and configurable budget caps to keep costs under control.",
+      },
+      {
+        image: "/fluxllm/rankings.png",
+        title: "Live model rankings",
+        caption:
+          "See which models win on real usage and price, grouped by capability — reasoning, coding, and long-context.",
+      },
+    ],
+    nextProject: "/work-memory",
   },
   {
-    id: "y2RIE6SRC",
-    slug: "h23",
-    title: "H23",
-    category: "Branding",
-    date: "2023",
+    id: "work-memory",
+    slug: "work-memory",
+    title: "Work Memory System",
+    category: "AI / RAG",
+    date: "2025",
     overview:
-      "H23 emerges in the digital realm as a cutting-edge Web3 agency, characterized by its minimalist, modern, and high-tech ethos. This fictional branding project encapsulates H23's mission to revolutionize the Web3 space with innovative solutions, sleek designs, and futuristic technology.",
+      "Document-grounded RAG over structured work data, returning grounded, cited answers.",
     description:
-      "<p>The H23 project was embarked upon to establish a distinctive brand presence in the burgeoning Web3 industry. With a focus on blockchain technology, cryptocurrency, and NFTs, H23 positions itself as a leader in delivering next-generation digital experiences.</p>",
-    services: "<p>BRAND DESIGN</p>",
-    role: "<p>CREATIVE DIRECTION</p>",
-    thumbnail:
-      "https://framerusercontent.com/images/1lKgMSMncdtxxIdtfOz62GUU8.png",
-    image02:
-      "https://framerusercontent.com/images/4oUHahz5PGc5KIDpj5COgHTs16A.png",
-    image03:
-      "https://framerusercontent.com/images/fNao0NwVxKOIkaq7bHLgD1iQ.png",
-    image04:
-      "https://framerusercontent.com/images/KaGLSpcvl2xtTrpJHdqeVljcL4.png",
-    image05:
-      "https://framerusercontent.com/images/cvgy0uni07SJPMVFmBTWHIVG01s.png",
-    image06:
-      "https://framerusercontent.com/images/R0FxCbdS7santdkEDGaDOdNRbUw.jpg",
+      "<p>A retrieval system over structured work data with PDF/DOCX ingestion and Gemini embeddings. Intent-aware reranking and deduplication handle temporal and experience-based queries, returning grounded, cited answers backed by retrieval-quality evaluation.</p>",
+    services: "<p>Python · FastAPI<br/>RAG · pgvector<br/>Gemini Embeddings</p>",
+    role: "<p>Design &amp; Engineering</p>",
+    stack: ["python", "fastapi", "postgresql"],
+    thumbnail: null,
+    image02: null,
+    image03: null,
+    image04: null,
+    image05: null,
+    image06: null,
     image07: null,
-    nextProject: "/glodwater",
+    github: "https://github.com/Gaurang1904/my-work-memory",
+    nextProject: "/king-of-the-pot",
   },
   {
-    id: "XVOLuhz07",
-    slug: "glodwater",
-    title: "Glod Water",
-    category: "Packaging design",
-    date: "2022",
+    id: "king-of-the-pot",
+    slug: "king-of-the-pot",
+    title: "King of the Pot",
+    category: "On-chain Game",
+    date: "2025",
     overview:
-      'In the vibrant world of luxury beverages, "Glod Water" emerges as a beacon of elegance and purity. This fictional project encompasses the creation of a distinct brand identity for Glod Water, inspired by the fusion of gold\'s luxury and water\'s freshness.',
+      "An on-chain PvP jackpot game on Base where the last player to overtake the pot wins.",
     description:
-      "<p>The Glod Water project was conceived to craft a unique position in the premium water market. The brand identity combines minimalist design principles with luxurious gold accents to convey the product's premium nature.</p>",
-    services: "<p>BRAND DESIGN<br/>PRODUCT RENDERING</p>",
-    role: "<p>CREATIVE DIRECTOR</p>",
-    thumbnail:
-      "https://framerusercontent.com/images/y8Mt8l6bM9RHhgmzbW2J0LCsSs.png",
-    image02:
-      "https://framerusercontent.com/images/MJin5EUEvey76oyNTR33DVOzsp4.png",
-    image03:
-      "https://framerusercontent.com/images/YrfW9OwDUWHiCsIdVzI5825hwA.png",
-    image04:
-      "https://framerusercontent.com/images/AFUJAk8w2OFDqWJNXlTrtWd5A0g.png",
-    image05:
-      "https://framerusercontent.com/images/UgzWq32LDOpseYWXsusT4yy5pk.png",
-    image06:
-      "https://framerusercontent.com/images/B6nPSRjM2fYAHkz7LNJ3MB5Dpus.png",
+      "<p>Players overtake a USDC pot to remain the last \"King\" when the timer expires. A single-contract room system — ReentrancyGuard, CEI pattern, full test coverage — is paired with a Viem event indexer feeding Redis/Postgres and real-time WebSocket updates.</p>",
+    services: "<p>Solidity · Foundry<br/>Viem · Base<br/>Redis · Socket.io</p>",
+    role: "<p>Smart Contracts &amp; Backend</p>",
+    stack: ["solidity", "ethereum", "redis", "postgresql"],
+    thumbnail: null,
+    image02: null,
+    image03: null,
+    image04: null,
+    image05: null,
+    image06: null,
     image07: null,
-    nextProject: "/n1-widgets",
+    github: "https://github.com/Gaurang1904/King-Of-The-Pot",
+    nextProject: "/stablecoin",
+  },
+  {
+    id: "stablecoin",
+    slug: "stablecoin",
+    title: "Decentralized Stablecoin",
+    category: "DeFi",
+    date: "2025",
+    overview:
+      "An over-collateralized, USD-pegged stablecoin backed by crypto collateral.",
+    description:
+      "<p>A decentralized, over-collateralized stablecoin pegged to USD and backed by exogenous crypto collateral. Chainlink price feeds drive the collateralization checks, with mint/burn mechanics and a liquidation engine keeping the system solvent — built and tested end-to-end with Foundry.</p>",
+    services: "<p>Solidity · Foundry<br/>Chainlink · OpenZeppelin</p>",
+    role: "<p>Smart Contracts</p>",
+    stack: ["solidity", "chainlink", "ethereum"],
+    thumbnail: null,
+    image02: null,
+    image03: null,
+    image04: null,
+    image05: null,
+    image06: null,
+    image07: null,
+    github: "https://github.com/Gaurang1904/STABLECOIN",
+    nextProject: "/fluxllm",
   },
 ]
 
@@ -183,25 +227,110 @@ export const archiveItems: ArchiveItem[] = [
   },
 ]
 
+export interface ExperienceItem {
+  slug: string
+  role: string
+  company: string
+  location: string
+  period: string
+  summary: string
+  highlights: string[]
+  stack: string
+}
+
+export const experiences: ExperienceItem[] = [
+  {
+    slug: "tychi-labs",
+    role: "AI/ML & Blockchain Engineer",
+    company: "Tychi Labs",
+    location: "Delhi, India",
+    period: "Apr 2025 — Jun 2026",
+    summary:
+      "Building ML-driven market prediction, retrieval & ranking systems, and multi-chain EVM tooling that lets AI agents transact on-chain.",
+    highlights: [
+      "Developed an ML-based financial market prediction system over time-series data with feature engineering, generating trading signals at sub-2 second inference latency.",
+      "Built an AI-driven retrieval and ranking system using vector embeddings and semantic similarity search to improve information-retrieval accuracy.",
+      "Designed and evaluated an AI decision-making framework with ensemble-style voting and model-output aggregation.",
+      "Built a recurring-investment system on ERC-3009 permit-based USDC transfers — gasless, signature-authorized automated crypto purchases.",
+      "Built the Agent Execution Interface (AEI): an MCP-native gateway letting AI agents execute EVM transactions across 8 chains with no destination-chain gas — wallet-bound access keys, non-custodial signing, and an x402 payment flow.",
+    ],
+    stack: "Python · PyTorch · FastAPI · RAG · Solidity · Viem · EVM · MCP",
+  },
+]
+
+export interface PlaygroundItem {
+  title: string
+  oneLiner: string
+  tags: string
+  href: string
+}
+
+export const githubProfile = "https://github.com/Gaurang1904"
+
+export const playgroundProjects: PlaygroundItem[] = [
+  {
+    title: "Gesture Control",
+    oneLiner: "Control your screen with real-time hand gestures.",
+    tags: "Computer Vision · OpenCV",
+    href: "https://github.com/Gaurang1904/gesture-control",
+  },
+  {
+    title: "Earthquake Prediction",
+    oneLiner: "Forecasting earthquake magnitude from seismic data with ML.",
+    tags: "Machine Learning · Python",
+    href: "https://github.com/Gaurang1904/Earhthquake-Prediction",
+  },
+  {
+    title: "Amazon Recommendation",
+    oneLiner: "Surfaces the products a shopper is most likely to buy.",
+    tags: "Recommender Systems · ML",
+    href: "https://github.com/Gaurang1904/amazon_product_recommendation",
+  },
+  {
+    title: "Drowsiness Detection",
+    oneLiner: "Spots driver drowsiness from live eye & face tracking.",
+    tags: "Computer Vision · OpenCV",
+    href: "https://github.com/Gaurang1904/drowsiness-detection",
+  },
+  {
+    title: "Fund Me",
+    oneLiner: "A crowdfunding smart contract funded via live price feeds.",
+    tags: "Solidity · Foundry · Chainlink",
+    href: "https://github.com/Gaurang1904/Fund-Me",
+  },
+  {
+    title: "Lucky7",
+    oneLiner: "An on-chain Lucky 7 number-betting game.",
+    tags: "Smart Contract · Solidity",
+    href: "https://github.com/Gaurang1904/Lucky7",
+  },
+  {
+    title: "Expense Tracker",
+    oneLiner: "Log, categorize, and visualize your spending.",
+    tags: "App · Full-Stack",
+    href: "https://github.com/Gaurang1904/ExpenseTracker",
+  },
+]
+
 export const selectedWorks = [
   {
     title: "FluxLLM — AI Gateway",
     tags: "LLM Infra · FastAPI · vLLM",
-    link: "/n1-widgets",
-  },
-  {
-    title: "King of the Pot",
-    tags: "On-chain Game · Solidity · Base",
-    link: "/h23",
+    link: "/fluxllm",
   },
   {
     title: "Work Memory System",
     tags: "RAG · pgvector · FastAPI",
-    link: "/glodwater",
+    link: "/work-memory",
+  },
+  {
+    title: "King of the Pot",
+    tags: "On-chain Game · Solidity · Base",
+    link: "/king-of-the-pot",
   },
   {
     title: "Decentralized Stablecoin",
     tags: "DeFi · Foundry · Chainlink",
-    link: "/n1-widgets",
+    link: "/stablecoin",
   },
 ]

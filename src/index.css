@@ -35,6 +35,260 @@ body[toggle-theme="dark"] {
   will-change: transform, opacity;
 }
 
+/* ── Playground — editorial masonry of work cards ── */
+.pg-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+  margin-bottom: 110px;
+}
+.pg-row.center { justify-content: center; }
+.pg-row:last-child { margin-bottom: 0; }
+@media (max-width: 720px) {
+  .pg-row { flex-direction: column; gap: 56px; margin-bottom: 72px; }
+  .pg-item { width: 100% !important; margin-top: 0 !important; }
+}
+.pg-cover {
+  position: absolute;
+  inset: 0;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.pg-card:hover .pg-cover {
+  transform: scale(1.1);           /* zooms in on hover */
+}
+.pg-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  transition: height 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pg-card:hover .pg-strip { height: 22px; }
+
+/* ── Project walkthrough — browser-framed screenshots ── */
+.browser-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  background: var(--color-bg);
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.55);
+}
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.14);
+}
+.browser-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: rgba(128, 128, 128, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.browser-dot svg {
+  display: block;
+}
+.browser-dot svg path {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.feature-num {
+  font-family: var(--font-grotesk);
+  font-weight: 500;
+  font-size: clamp(52px, 6vw, 96px);
+  line-height: 1;
+  color: var(--color-text-secondary);
+  opacity: 0.22;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ── Stack grid — hover spotlight behind each logo ── */
+.stack-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+}
+.stack-hl {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  transform: scale(0.9);
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.stack-tile:hover .stack-hl {
+  background: rgba(128, 128, 128, 0.16);
+  border-color: rgba(128, 128, 128, 0.24);
+  transform: scale(1);
+}
+
+/* ── Aura assistant — particle-sphere launcher + chat panel ── */
+.aura-fab {
+  position: fixed;
+  bottom: 18px;
+  right: 20px;
+  z-index: 300;
+  width: 92px;
+  height: 92px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-primary);   /* particle color — flips with theme */
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+.aura-fab { perspective: 340px; animation: bot-greet 7s ease-in-out 5s infinite; }
+
+/* idle float */
+.aura-bob { display: block; animation: bot-bob 3.4s ease-in-out infinite; }
+@keyframes bot-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+/* greet bounce — first at 5s, then every 7s */
+@keyframes bot-greet {
+  0%, 18%, 100% { transform: translateY(0) rotate(0deg); }
+  4% { transform: translateY(-8px) rotate(-6deg); }
+  9% { transform: translateY(0) rotate(4deg); }
+  13% { transform: translateY(-4px) rotate(-3deg); }
+}
+/* cursor tilt */
+.aura-tilt { transition: transform 0.18s ease; will-change: transform; }
+
+
+.aura-panel {
+  position: fixed;
+  bottom: 124px;
+  right: 24px;
+  z-index: 299;
+  width: min(370px, calc(100vw - 32px));
+  height: min(500px, calc(100vh - 140px));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  border: 1px solid rgba(128, 128, 128, 0.28);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.45);
+}
+.aura-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.18);
+}
+.aura-title { font-family: var(--font-grotesk); font-weight: 500; font-size: 16px; }
+.aura-sub { font-size: 12px; color: var(--color-text-secondary); flex: 1; }
+.aura-close {
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.aura-close:hover { color: var(--color-text-primary); }
+
+.aura-chat { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.aura-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.aura-empty {
+  margin: auto;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 230px;
+}
+.aura-msg {
+  max-width: 85%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.aura-msg p { margin: 0; }
+.aura-msg--user {
+  align-self: flex-end;
+  background: var(--color-text-primary);
+  color: var(--color-bg);
+  border-bottom-right-radius: 4px;
+}
+.aura-msg--assistant {
+  align-self: flex-start;
+  background: rgba(128, 128, 128, 0.12);
+  border: 1px solid rgba(128, 128, 128, 0.14);
+  border-bottom-left-radius: 4px;
+}
+.aura-sources {
+  margin-top: 6px !important;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+.aura-error { color: #e5484d; font-size: 12px; }
+.aura-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid rgba(128, 128, 128, 0.18);
+}
+.aura-input input {
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  outline: none;
+}
+.aura-input input:focus { border-color: var(--color-text-secondary); }
+.aura-input button {
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-text-primary);
+  color: var(--color-bg);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  cursor: pointer;
+}
+.aura-input button:disabled { opacity: 0.45; cursor: default; }
+
 /* ── Availability badge dot — live pulse ── */
 @keyframes status-pulse {
   0%   { box-shadow: 0 0 0 0 rgba(158, 255, 0, 0.55); }
