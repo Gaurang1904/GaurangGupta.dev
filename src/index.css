@@ -215,6 +215,24 @@ body[toggle-theme="dark"] {
 .aura-close:hover { color: var(--color-text-primary); }
 
 .aura-chat { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.aura-offline {
+  margin: auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 13.5px;
+  line-height: 1.55;
+  max-width: 280px;
+}
+.aura-offline p { margin: 0 0 10px; }
+.aura-offline-title {
+  font-family: var(--font-grotesk);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--color-text-primary);
+}
+.aura-offline-cta { font-size: 12.5px; }
+.aura-offline a { color: var(--color-text-primary); text-decoration: underline; }
 .aura-messages {
   flex: 1;
   overflow-y: auto;

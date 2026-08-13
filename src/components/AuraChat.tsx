@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 // Set VITE_ASSISTANT_API_URL in your portfolio's .env; falls back to local dev.
 const API_URL = import.meta.env.VITE_ASSISTANT_API_URL ?? "http://localhost:8000";
 
+// Until the backend URL is configured (in Netlify env), show an offline notice
+// instead of a chat that just errors. Auto-flips on once VITE_ASSISTANT_API_URL is set.
+const ONLINE = Boolean(import.meta.env.VITE_ASSISTANT_API_URL);
+
 type Source = {
   document: string;
   excerpt: string;
@@ -58,6 +62,27 @@ export function AuraChat() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!ONLINE) {
+    return (
+      <div className="aura-chat aura-chat--offline">
+        <div className="aura-offline">
+          <p className="aura-offline-title">Aura is recharging ⚡</p>
+          <p>
+            My knowledge core is offline while Gaurang wires me up. I'll be
+            answering questions about his work here soon.
+          </p>
+          <p className="aura-offline-cta">
+            In the meantime, reach him at{" "}
+            <a href="mailto:gauranggupta192004@gmail.com">
+              gauranggupta192004@gmail.com
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
