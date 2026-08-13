@@ -3,11 +3,11 @@ import { AnimatePresence, motion } from "framer-motion"
 import { AuraChat } from "./AuraChat"
 
 /*
-  Aura launcher — the exact robot render (public/aura-bot.png) given a 3D
-  feel: idle float, greet bounce 5s after load, and a cursor-tracking
-  perspective tilt on hover. Click toggles the chat panel.
-  ponytail: the reference is a stock render — no rigged model of it exists,
-  so the image + tilt is the only pixel-exact path; swap in a GLB if one ever turns up.
+  Aura launcher — robot emoji given a 3D feel: idle float, greet bounce 5s
+  after load, and a cursor-tracking perspective tilt on hover. Click toggles
+  the chat panel.
+  ponytail: emoji, not an image — no aura-bot.png asset exists. Swap the 🤖
+  span for an <img>/GLB if real bot art ever turns up.
 */
 
 const SIZE = 96
@@ -15,7 +15,7 @@ const TILT = 22 // max tilt in degrees
 
 export function AuraWidget() {
   const [open, setOpen] = useState(false)
-  const imgRef = useRef<HTMLImageElement>(null)
+  const imgRef = useRef<HTMLSpanElement>(null)
 
   /* Close on Escape */
   useEffect(() => {
@@ -69,15 +69,22 @@ export function AuraWidget() {
         onPointerLeave={onLeave}
       >
         <span className="aura-bob">
-          <img
+          <span
             ref={imgRef}
             className="aura-tilt"
-            src="/aura-bot.png"
-            alt=""
-            width={SIZE}
-            height={SIZE}
-            style={{ objectFit: "contain", display: "block" }}
-          />
+            aria-hidden="true"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: SIZE,
+              height: SIZE,
+              fontSize: SIZE * 0.6,
+              lineHeight: 1,
+            }}
+          >
+            🤖
+          </span>
         </span>
       </button>
     </>
