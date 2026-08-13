@@ -3,19 +3,20 @@ import { AnimatePresence, motion } from "framer-motion"
 import { AuraChat } from "./AuraChat"
 
 /*
-  Aura launcher — robot emoji given a 3D feel: idle float, greet bounce 5s
-  after load, and a cursor-tracking perspective tilt on hover. Click toggles
-  the chat panel.
-  ponytail: emoji, not an image — no aura-bot.png asset exists. Swap the 🤖
-  span for an <img>/GLB if real bot art ever turns up.
+  Aura launcher — a rotating particle sphere rendered on <canvas>. Points sit
+  on a fibonacci sphere, spin around Y, and scatter outward on hover. Particle
+  color inherits the text color so it flips with the theme. Idle float + greet
+  bounce come from CSS on the wrapper spans.
+  ponytail: vanilla 2D canvas, no three.js — 260 dots at 92px doesn't need a
+  WebGL engine. Swap in a GLB only if the design ever demands real depth/lighting.
 */
 
-const SIZE = 96
-const TILT = 22 // max tilt in degrees
+const SIZE = 92
+const N = 260 // particle count
 
 export function AuraWidget() {
   const [open, setOpen] = useState(false)
-  const imgRef = useRef<HTMLSpanElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   /* Close on Escape */
   useEffect(() => {
@@ -25,18 +26,68 @@ export function AuraWidget() {
     return () => window.removeEventListener("keydown", onKey)
   }, [open])
 
-  /* cursor-tracking 3D tilt */
-  const onMove = (e: React.PointerEvent<HTMLButtonElement>) => {
-    const img = imgRef.current
-    if (!img) return
-    const r = e.currentTarget.getBoundingClientRect()
-    const px = (e.clientX - r.left) / r.width - 0.5
-    const py = (e.clientY - r.top) / r.height - 0.5
-    img.style.transform = `rotateY(${(px * TILT).toFixed(1)}deg) rotateX(${(-py * TILT).toFixed(1)}deg) scale(1.07)`
-  }
-  const onLeave = () => {
-    const img = imgRef.current
-    if (img) img.style.transform = "rotateY(0deg) rotateX(0deg) scale(1)"
+  /* particle sphere animation */
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    canvas.width = SIZE * dpr
+    canvas.height = SIZE * dpr
+    ctx.scale(dpr, dpr)
+
+    // fibonacci sphere — even point distribution on the surface
+    const pts: { x: number; y: number; z: number }[] = []
+    const golden = Math.PI * (3 - Math.sqrt(5))
+    for (let i = 0; i < N; i++) {
+      const y = 1 - (i / (N - 1)) * 2
+      const r = Math.sqrt(1 - y * y)
+      const t = golden * i
+      pts.push({ x: Math.cos(t) * r, y, z: Math.sin(t) * r })
+    }
+
+    const cx = SIZE / 2
+    const cy = SIZE / 2
+    const R = SIZE * 0.32
+    let angle = 0
+    let scatter = 0 // eased hover amount 0..1
+    let raf = 0
+
+    const render = () => {
+      angle += 0.006
+      const target = Number(canvas.dataset.hover || 0)
+      scatter += (target - scatter) * 0.12
+
+      const col = getComputedStyle(canvas).color || "#111"
+      const sin = Math.sin(angle)
+      const cos = Math.cos(angle)
+
+      ctx.clearRect(0, 0, SIZE, SIZE)
+      ctx.fillStyle = col
+      for (const p of pts) {
+        // rotate around Y axis
+        const x = p.x * cos - p.z * sin
+        const z = p.x * sin + p.z * cos
+        const spread = 1 + scatter * (0.35 + 0.4 * Math.sin(angle * 3 + p.y * 6))
+        const px = cx + x * R * spread
+        const py = cy + p.y * R * spread
+        const depth = (z + 1) / 2 // 0 back .. 1 front
+        ctx.globalAlpha = 0.2 + depth * 0.7
+        ctx.beginPath()
+        ctx.arc(px, py, 0.5 + depth * 1.3, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      ctx.globalAlpha = 1
+      raf = requestAnimationFrame(render)
+    }
+    render()
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
+  const setHover = (v: number) => {
+    if (canvasRef.current) canvasRef.current.dataset.hover = String(v)
   }
 
   return (
@@ -65,26 +116,16 @@ export function AuraWidget() {
         className="aura-fab"
         aria-label={open ? "Close assistant" : "Open assistant"}
         onClick={() => setOpen((o) => !o)}
-        onPointerMove={onMove}
-        onPointerLeave={onLeave}
+        onPointerEnter={() => setHover(1)}
+        onPointerLeave={() => setHover(0)}
       >
         <span className="aura-bob">
-          <span
-            ref={imgRef}
+          <canvas
+            ref={canvasRef}
             className="aura-tilt"
             aria-hidden="true"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: SIZE,
-              height: SIZE,
-              fontSize: SIZE * 0.6,
-              lineHeight: 1,
-            }}
-          >
-            🤖
-          </span>
+            style={{ width: SIZE, height: SIZE, display: "block" }}
+          />
         </span>
       </button>
     </>
